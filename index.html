@@ -36,7 +36,7 @@
         var recordId = getParameterByName('recordId');
         console.log("Record ID:", recordId);
 
-        // Function to submit the form data to Zapier
+        // Function to submit the form data to Airtable and Zapier
         function submitForm() {
             var domains = document.getElementById('domains').value;
             var productRelevancy = document.getElementById('productRelevancy').value;
@@ -52,22 +52,54 @@
                 demoToken: demoToken
             };
 
-            // Send the form data to Zapier
-            fetch('YOUR_ZAPIER_WEBHOOK_URL', {
-                method: 'POST',
+            // Update Airtable record
+            updateAirtableRecord(recordId, formData)
+                .then(() => {
+                    // Send the form data to Zapier after updating Airtable
+                    return fetch('YOUR_ZAPIER_WEBHOOK_URL', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Zapier success:', data);
+                    alert('Data submitted successfully!');
+                })
+                .catch((error) => {
+                    console.error('Error:', error);
+                    alert('Error submitting data.');
+                });
+        }
+
+        // Function to update the Airtable record
+        function updateAirtableRecord(recordId, fields) {
+            // Create the fields object for Airtable
+            var airtableFields = {
+                "Initial Known Competitor Domains": fields.domains,
+                "Min Product Description Relevancy": parseFloat(fields.productRelevancy),
+                "Min Problem Solved Relevancy": parseFloat(fields.problemRelevancy),
+                "Demo Token": fields.demoToken
+            };
+
+            return fetch(`https://api.airtable.com/v0/YOUR_BASE_ID/YOUR_TABLE_NAME/${recordId}`, {
+                method: 'PATCH',
                 headers: {
+                    'Authorization': 'Bearer YOUR_API_KEY',
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({ fields: airtableFields })
             })
             .then(response => response.json())
             .then(data => {
-                console.log('Success:', data);
-                alert('Data submitted successfully!');
+                console.log('Airtable update success:', data);
             })
             .catch((error) => {
-                console.error('Error:', error);
-                alert('Error submitting data.');
+                console.error('Airtable update error:', error);
+                throw error;
             });
         }
     </script>
