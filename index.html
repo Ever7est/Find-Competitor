@@ -10,16 +10,16 @@
 
     <form id="competitorForm">
         <label for="domains">Initial Known Competitor Domains:</label><br>
-        <textarea id="domains" name="domains" rows="4" cols="50" placeholder="Enter multiple domains, each on a new line"></textarea><br><br>
+        <textarea id="domains" name="domains" rows="4" cols="50" placeholder="Enter multiple domains, each on a new line" required></textarea><br><br>
 
         <label for="productRelevancy">Min Product Description Relevancy:</label><br>
-        <input type="number" id="productRelevancy" name="productRelevancy" step="0.01" placeholder="Enter a decimal value"><br><br>
+        <input type="number" id="productRelevancy" name="productRelevancy" step="0.01" placeholder="Enter a decimal value" required><br><br>
 
         <label for="problemRelevancy">Min Problem Solved Relevancy:</label><br>
-        <input type="number" id="problemRelevancy" name="problemRelevancy" step="0.01" placeholder="Enter a decimal value"><br><br>
+        <input type="number" id="problemRelevancy" name="problemRelevancy" step="0.01" placeholder="Enter a decimal value" required><br><br>
 
         <label for="demoToken">Demo Token:</label><br>
-        <input type="text" id="demoToken" name="demoToken" placeholder="Enter an alphanumeric value"><br><br>
+        <input type="text" id="demoToken" name="demoToken" placeholder="Enter an alphanumeric value" required><br><br>
 
         <button type="button" onclick="submitForm()">Find Competitors</button>
     </form>
