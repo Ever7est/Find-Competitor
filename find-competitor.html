@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Find Competitors</title>
+</head>
+<body>
+    <h1>Enter Competitor Information</h1>
+
+    <form id="competitorForm">
+        <label for="domains">Initial Known Competitor Domains:</label><br>
+        <textarea id="domains" name="domains" rows="4" cols="50" placeholder="Enter multiple domains, each on a new line"></textarea><br><br>
+
+        <label for="productRelevancy">Min Product Description Relevancy:</label><br>
+        <input type="number" id="productRelevancy" name="productRelevancy" step="0.01" placeholder="Enter a decimal value"><br><br>
+
+        <label for="problemRelevancy">Min Problem Solved Relevancy:</label><br>
+        <input type="number" id="problemRelevancy" name="problemRelevancy" step="0.01" placeholder="Enter a decimal value"><br><br>
+
+        <label for="demoToken">Demo Token:</label><br>
+        <input type="text" id="demoToken" name="demoToken" placeholder="Enter an alphanumeric value"><br><br>
+
+        <button type="button" onclick="submitForm()">Find Competitors</button>
+    </form>
+
+    <script>
+        // Function to get the recordId from URL parameters
+        function getParameterByName(name) {
+            name = name.replace(/[\[]/, "\\[").replace(/[\]]/, "\\]");
+            var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
+                results = regex.exec(location.search);
+            return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+        }
+
+        var recordId = getParameterByName('recordId');
+        console.log("Record ID:", recordId);
+
+        // Function to submit the form data to Zapier
+        function submitForm() {
+            var domains = document.getElementById('domains').value;
+            var productRelevancy = document.getElementById('productRelevancy').value;
+            var problemRelevancy = document.getElementById('problemRelevancy').value;
+            var demoToken = document.getElementById('demoToken').value;
+
+            // Create an object with the form data
+            var formData = {
+                recordId: recordId,
+                domains: domains,
+                productRelevancy: productRelevancy,
+                problemRelevancy: problemRelevancy,
+                demoToken: demoToken
+            };
+
+            // Send the form data to Zapier
+            fetch('YOUR_ZAPIER_WEBHOOK_URL', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(formData)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Success:', data);
+                alert('Data submitted successfully!');
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+                alert('Error submitting data.');
+            });
+        }
+    </script>
+</body>
+</html>
