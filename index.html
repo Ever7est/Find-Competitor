@@ -8,7 +8,7 @@
 <body>
     <h1>Enter Competitor Information</h1>
 
-    <form id="competitorForm">
+    <form id="competitorForm" onsubmit="return submitForm(event)">
         <label for="domains">Initial Known Competitor Domains:</label><br>
         <textarea id="domains" name="domains" rows="4" cols="50" placeholder="Enter multiple domains, each on a new line" required></textarea><br><br>
 
@@ -21,7 +21,7 @@
         <label for="demoToken">Demo Token:</label><br>
         <input type="text" id="demoToken" name="demoToken" placeholder="Enter an alphanumeric value" required><br><br>
 
-        <button type="button" onclick="submitForm()">Find Competitors</button>
+        <button type="submit">Find Competitors</button>
     </form>
 
     <script>
@@ -37,11 +37,19 @@
         console.log("Record ID:", recordId);
 
         // Function to submit the form data to Airtable and Zapier
-        function submitForm() {
+        function submitForm(event) {
+            event.preventDefault(); // Prevent default form submission
+
             var domains = document.getElementById('domains').value;
             var productRelevancy = document.getElementById('productRelevancy').value;
             var problemRelevancy = document.getElementById('problemRelevancy').value;
             var demoToken = document.getElementById('demoToken').value;
+
+            // Check if all required fields are filled
+            if (!domains || !productRelevancy || !problemRelevancy || !demoToken) {
+                alert("Please fill out all fields.");
+                return false;
+            }
 
             // Create an object with the form data
             var formData = {
@@ -73,6 +81,8 @@
                     console.error('Error:', error);
                     alert('Error submitting data.');
                 });
+
+            return false; // Prevent form from submitting the default way
         }
 
         // Function to update the Airtable record
