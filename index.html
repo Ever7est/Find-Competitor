@@ -89,16 +89,16 @@
         function updateAirtableRecord(recordId, fields) {
             // Create the fields object for Airtable
             var airtableFields = {
-                "Initial Known Competitor Domains": fields.domains,
+                "Competitors Domain (User Input)": fields.domains,
                 "Min Product Description Relevancy": parseFloat(fields.productRelevancy),
                 "Min Problem Solved Relevancy": parseFloat(fields.problemRelevancy),
-                "Demo Token": fields.demoToken
+                "TokenCompetitorInput": fields.demoToken
             };
 
-            return fetch(`https://api.airtable.com/v0/YOUR_BASE_ID/YOUR_TABLE_NAME/${recordId}`, {
+            return fetch(`https://api.airtable.com/v0/app4F1EFT6p4kWZkn/Investment Opportunities/${recordId}`, {
                 method: 'PATCH',
                 headers: {
-                    'Authorization': 'Bearer YOUR_API_KEY',
+                    'Authorization': 'Bearer patWBsuRRLOBaqWdR.b22296acdbe1d69081c4aabe9b6922adc682354e97a5e761539ebf61a1941def',
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({ fields: airtableFields })
