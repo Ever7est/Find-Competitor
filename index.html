@@ -64,7 +64,7 @@
             updateAirtableRecord(recordId, formData)
                 .then(() => {
                     // Send the form data to Zapier after updating Airtable
-                    return fetch('YOUR_ZAPIER_WEBHOOK_URL', {
+                    return fetch('https://hooks.zapier.com/hooks/catch/13309096/2yhp69g/', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json'
